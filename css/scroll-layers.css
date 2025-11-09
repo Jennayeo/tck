@@ -1,0 +1,292 @@
+/* Scroll-based Layer Transition Section */
+.scroll-layers-section {
+    position: relative;
+    height: 100vh; /* 고정 높이 100vh */
+    background: #7a7a7a; /* 클래식 코르벳 배경색 (회색) */
+    overflow: hidden;
+}
+
+/* 배경색 슬라이드 레이어 제거 */
+.background-slide {
+    display: none;
+}
+
+/* Canvas - 이미지가 배경 위에 표시 */
+#sequenceCanvas {
+    position: relative;
+    z-index: 10; /* 배경 위에 */
+}
+
+.scroll-layers-container {
+    position: sticky;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100vh; /* 고정 높이 100vh */
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    overflow: hidden;
+    z-index: 1;
+    /* 스크롤 잠금 중 사용자가 고정된 느낌을 받도록 */
+    will-change: transform;
+}
+
+/* Image Layers - 블렌딩 효과 */
+.layers-content {
+    position: relative;
+    width: 100%;
+    max-width: 1400px;
+    height: 80vh;
+    margin: 0 auto;
+}
+
+/* 기본 레이어: 와이어프레임 (항상 표시) */
+.layer-base {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    z-index: 1;
+}
+
+/* 오버레이 레이어: 완성차 (점진적으로 나타남) */
+.layer-overlay {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    z-index: 2;
+}
+
+.wireframe-image,
+.complete-image {
+    max-width: 100%;
+    max-height: 100%;
+    object-fit: contain;
+    filter: drop-shadow(0 10px 50px rgba(0, 200, 255, 0.5));
+    transition: opacity 0.3s ease, filter 0.3s ease;
+}
+
+/* 와이어프레임 이미지 효과 */
+.wireframe-image {
+    filter: drop-shadow(0 10px 50px rgba(0, 200, 255, 0.6)) brightness(1.2);
+}
+
+/* 완성차 이미지 효과 */
+.complete-image {
+    filter: drop-shadow(0 15px 60px rgba(227, 24, 55, 0.4));
+}
+
+/* Scroll Indicator */
+.scroll-indicator {
+    position: absolute;
+    bottom: 40px;
+    left: 50%;
+    transform: translateX(-50%);
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 8px;
+    color: rgba(255, 255, 255, 0.6);
+    font-size: 12px;
+    font-weight: 500;
+    letter-spacing: 2px;
+    z-index: 20;
+    transition: opacity 0.5s ease;
+}
+
+.scroll-indicator-line {
+    width: 1px;
+    height: 40px;
+    background: linear-gradient(to bottom, rgba(255, 255, 255, 0.6), transparent);
+    animation: scroll-bounce 2s infinite;
+}
+
+@keyframes scroll-bounce {
+    0%, 100% {
+        transform: translateY(0);
+        opacity: 1;
+    }
+    50% {
+        transform: translateY(10px);
+        opacity: 0.3;
+    }
+}
+
+/* Progress Bar - 수직 진행 바 (숨김) */
+.layer-progress {
+    position: absolute;
+    top: 50%;
+    right: 40px;
+    transform: translateY(-50%);
+    display: none; /* 진행 바 숨김 - 배경색으로 대체 */
+    flex-direction: column;
+    align-items: center;
+    gap: 16px;
+    z-index: 30;
+}
+
+/* 스크롤 잠금 상태 표시 */
+.scroll-lock-indicator {
+    padding: 8px 16px;
+    background: rgba(0, 200, 255, 0.1);
+    border: 1px solid rgba(0, 200, 255, 0.3);
+    border-radius: 20px;
+    color: rgba(0, 200, 255, 0.9);
+    font-size: 11px;
+    font-weight: 600;
+    letter-spacing: 1px;
+    text-transform: uppercase;
+    animation: pulse-glow 2s infinite;
+}
+
+@keyframes pulse-glow {
+    0%, 100% {
+        box-shadow: 0 0 10px rgba(0, 200, 255, 0.3);
+    }
+    50% {
+        box-shadow: 0 0 20px rgba(0, 200, 255, 0.5);
+    }
+}
+
+.progress-bar-container {
+    width: 4px;
+    height: 200px;
+    background: rgba(255, 255, 255, 0.2);
+    border-radius: 2px;
+    position: relative;
+    overflow: hidden;
+}
+
+.progress-bar-fill {
+    position: absolute;
+    bottom: 0;
+    left: 0;
+    width: 100%;
+    height: 0%;
+    background: linear-gradient(to top, #E31837, #00C8FF);
+    border-radius: 2px;
+    /* transition 제거로 즉각 반응 */
+    box-shadow: 0 0 20px rgba(0, 200, 255, 0.5);
+}
+
+.progress-percentage {
+    margin-top: 12px;
+    color: rgba(255, 255, 255, 0.8);
+    font-size: 14px;
+    font-weight: 600;
+    letter-spacing: 1px;
+}
+
+/* Gradient Overlays */
+.gradient-overlay-top {
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    height: 200px;
+    background: linear-gradient(to bottom, #000, transparent);
+    z-index: 5;
+    pointer-events: none;
+}
+
+.gradient-overlay-bottom {
+    position: absolute;
+    bottom: 0;
+    left: 0;
+    right: 0;
+    height: 200px;
+    background: linear-gradient(to top, #000, transparent);
+    z-index: 5;
+    pointer-events: none;
+}
+
+/* Grid Background Effect */
+.grid-background {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background-image: 
+        linear-gradient(rgba(0, 200, 255, 0.03) 1px, transparent 1px),
+        linear-gradient(90deg, rgba(0, 200, 255, 0.03) 1px, transparent 1px);
+    background-size: 50px 50px;
+    opacity: 0.5;
+    pointer-events: none;
+}
+
+/* Glow Effect */
+.glow-effect {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    width: 600px;
+    height: 600px;
+    background: radial-gradient(circle, rgba(0, 200, 255, 0.1), transparent 70%);
+    filter: blur(60px);
+    pointer-events: none;
+    opacity: 0;
+    transition: opacity 1s ease;
+}
+
+.layer.active ~ .glow-effect {
+    opacity: 1;
+}
+
+/* Responsive */
+@media (max-width: 768px) {
+    .scroll-layers-section {
+        min-height: 300vh; /* 모바일도 스크롤 잠금 사용 */
+    }
+    
+    .layers-content {
+        height: 70vh;
+    }
+    
+    .layer-progress {
+        right: 20px;
+    }
+    
+    .progress-bar-container {
+        height: 150px;
+    }
+    
+    .progress-percentage {
+        font-size: 12px;
+    }
+    
+    .wireframe-image,
+    .complete-image {
+        filter: drop-shadow(0 5px 30px rgba(0, 200, 255, 0.4));
+    }
+}
+
+@media (max-width: 480px) {
+    .scroll-layers-section {
+        min-height: 300vh;
+    }
+    
+    .scroll-indicator {
+        bottom: 20px;
+        font-size: 10px;
+    }
+    
+    .layer-progress {
+        right: 10px;
+    }
+    
+    .progress-bar-container {
+        height: 120px;
+    }
+}

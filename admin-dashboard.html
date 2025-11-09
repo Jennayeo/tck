@@ -1,0 +1,87 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>GMTCK 관리자 대시보드</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@300;400;500;700;900&family=Noto+Sans+KR:wght@300;400;500;600;700;900&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="css/admin.css">
+</head>
+<body>
+    <!-- Top Navigation -->
+    <nav class="admin-nav">
+        <div class="nav-container">
+            <div class="nav-brand">
+                <h1>GMTCK 관리자</h1>
+            </div>
+            <div class="nav-user">
+                <span id="userName"></span>
+                <button class="btn-logout" id="btnLogout">로그아웃</button>
+            </div>
+        </div>
+    </nav>
+
+    <!-- Main Content -->
+    <div class="admin-container">
+        <!-- Sidebar -->
+        <aside class="sidebar">
+            <div class="sidebar-menu">
+                <a href="admin-analytics.html" class="menu-item">
+                    <span class="icon">📊</span>
+                    <span>대시보드</span>
+                </a>
+                <div style="height: 1px; background: var(--border-color); margin: 12px 24px;"></div>
+                <button class="menu-item active" data-section="hero">
+                    <span class="icon">🏠</span>
+                    <span>히어로 섹션</span>
+                </button>
+                <button class="menu-item" data-section="capabilities">
+                    <span class="icon">⚙️</span>
+                    <span>핵심 역량</span>
+                </button>
+                <button class="menu-item" data-section="innovation">
+                    <span class="icon">💡</span>
+                    <span>혁신 기술</span>
+                </button>
+                <button class="menu-item" data-section="stats">
+                    <span class="icon">📊</span>
+                    <span>통계</span>
+                </button>
+                <button class="menu-item" data-section="about">
+                    <span class="icon">📝</span>
+                    <span>회사소개</span>
+                </button>
+                <button class="menu-item" data-section="location">
+                    <span class="icon">📍</span>
+                    <span>오시는 길</span>
+                </button>
+            </div>
+            <div class="sidebar-footer">
+                <a href="index.html" target="_blank" class="btn-preview">
+                    <span>🌐</span> 사이트 미리보기
+                </a>
+            </div>
+        </aside>
+
+        <!-- Content Area -->
+        <main class="content-area">
+            <div class="content-header">
+                <h2 id="sectionTitle">히어로 섹션</h2>
+                <button class="btn-save" id="btnSave">저장하기</button>
+            </div>
+
+            <div class="content-body" id="contentBody">
+                <!-- Content will be loaded here dynamically -->
+            </div>
+
+            <div class="success-message" id="successMessage">
+                ✓ 변경사항이 저장되었습니다!
+            </div>
+        </main>
+    </div>
+
+    <script src="js/admin.js"></script>
+</body>
+</html>
