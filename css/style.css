@@ -333,11 +333,13 @@ body {
   transform: translateX(-50%);
   z-index: 0;
   object-fit: cover;
-  opacity: 1;
+  opacity: 1 !important;
   transition: opacity 0.5s ease;
   /* Hide video controls completely */
   pointer-events: none;
   -webkit-tap-highlight-color: transparent;
+  display: block !important;
+  visibility: visible !important;
 }
 
 /* Hide all video controls and play buttons (Safari, Chrome, etc.) */
@@ -400,8 +402,8 @@ body {
 }
 
 .hero-video[data-error="true"] {
-  opacity: 0;
-  display: none;
+  display: none !important;
+  visibility: hidden !important;
 }
 
 .hero-fallback-bg {
@@ -414,10 +416,12 @@ body {
   z-index: -1;
   opacity: 0;
   transition: opacity 0.5s ease;
+  display: none;
 }
 
 .hero-video[data-error="true"] ~ .hero-fallback-bg {
   opacity: 1;
+  display: block;
 }
 
 /* Dark Overlay for better text readability */

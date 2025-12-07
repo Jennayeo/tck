@@ -326,19 +326,23 @@ if (heroVideo) {
   let playAttempted = false;
   let playPromise = null;
 
-  // Function to play video with enhanced retry logic for Safari
+  // Function to play video with enhanced retry logic
   const playVideo = async (retryCount = 0) => {
     // Prevent multiple simultaneous play attempts
     if (playPromise) {
       return playPromise;
     }
 
+    // Always ensure video is muted and ready
+    heroVideo.muted = true;
+    heroVideo.volume = 0;
+
     const maxRetries = isSafari ? 10 : 5;
     const retryDelay = isSafari ? 1000 : 500;
 
     playPromise = (async () => {
       try {
-        // Ensure video is ready
+        // Only try to play if video has metadata loaded
         if (heroVideo.readyState >= 2) {
           // HAVE_CURRENT_DATA or higher
           await heroVideo.play();
@@ -350,10 +354,13 @@ if (heroVideo) {
           throw new Error("Video not ready");
         }
       } catch (error) {
-        console.warn(`Autoplay attempt ${retryCount + 1} failed:`, error);
+        console.warn(
+          `Autoplay attempt ${retryCount + 1} failed:`,
+          error.message
+        );
         playPromise = null;
 
-        // Retry with exponential backoff for Safari
+        // Retry with exponential backoff
         if (retryCount < maxRetries) {
           const delay = retryDelay * Math.pow(1.5, retryCount);
           setTimeout(() => {
@@ -370,6 +377,29 @@ if (heroVideo) {
 
     return playPromise;
   };
+
+  // Monitor video playback status and resume if paused
+  let playbackMonitor = null;
+  const startPlaybackMonitor = () => {
+    if (playbackMonitor) return;
+    playbackMonitor = setInterval(() => {
+      if (
+        heroVideo &&
+        heroVideo.paused &&
+        !heroVideo.ended &&
+        heroVideo.readyState >= 2
+      ) {
+        console.log("Video paused unexpectedly, attempting to resume...");
+        playVideo(0).catch(() => {});
+      }
+    }, 3000); // Check every 3 seconds
+  };
+
+  // Start monitoring after first successful play
+  heroVideo.addEventListener("playing", () => {
+    console.log("Video is now playing!");
+    startPlaybackMonitor();
+  });
 
   // Safari-specific: Wait for full page load
   const attemptPlayAfterLoad = () => {
@@ -437,11 +467,117 @@ if (heroVideo) {
     }
   });
 
-  // Error handling
-  heroVideo.addEventListener("error", (e) => {
-    console.warn("Video failed to load, using fallback");
+  // Enhanced error handling and video load detection
+  let videoLoadTimeout;
+  let videoLoaded = false;
+
+  const checkVideoLoaded = () => {
+    // Check if video actually loaded and can play
+    if (heroVideo.readyState === 0 && heroVideo.networkState === 3) {
+      // Network error or source not found
+      console.warn("Video failed to load - network error");
+      if (!videoLoaded) {
+        showFallback();
+      }
+      return;
+    }
+
+    // Set timeout to detect if video doesn't load within reasonable time
+    clearTimeout(videoLoadTimeout);
+    videoLoadTimeout = setTimeout(() => {
+      if (heroVideo.readyState < 2 && !videoLoaded) {
+        console.warn("Video taking too long to load, showing fallback");
+        showFallback();
+      }
+    }, 10000); // 10 second timeout
+  };
+
+  const showFallback = () => {
+    heroVideo.style.display = "none";
     heroVideo.setAttribute("data-error", "true");
+    const fallbackBg = document.querySelector(".hero-fallback-bg");
+    if (fallbackBg) {
+      fallbackBg.style.display = "block";
+      // Force opacity to show fallback immediately
+      setTimeout(() => {
+        fallbackBg.style.opacity = "1";
+      }, 100);
+    }
+  };
+
+  // Error handling - network errors, CORS, format errors
+  heroVideo.addEventListener("error", (e) => {
+    console.warn("Video error:", e);
+    const error = heroVideo.error;
+    if (error) {
+      console.error("Video error code:", error.code, "Message:", error.message);
+      // Error code 2 = NETWORK_ERROR, 3 = DECODE_ERROR, 4 = SRC_NOT_SUPPORTED
+      if (error.code >= 2) {
+        heroVideo.setAttribute("data-error", "true");
+        showFallback();
+      }
+    }
   });
+
+  // Check for stalled loading
+  heroVideo.addEventListener("stalled", () => {
+    console.warn("Video loading stalled");
+    checkVideoLoaded();
+  });
+
+  // Check for abort
+  heroVideo.addEventListener("abort", () => {
+    console.warn("Video loading aborted");
+    showFallback();
+  });
+
+  // Monitor loading progress
+  heroVideo.addEventListener("loadstart", () => {
+    console.log("Video loading started");
+    checkVideoLoaded();
+  });
+
+  heroVideo.addEventListener("progress", () => {
+    clearTimeout(videoLoadTimeout);
+    if (heroVideo.readyState >= 2) {
+      videoLoaded = true;
+      console.log("Video loaded successfully");
+    }
+  });
+
+  // Check when video metadata is loaded
+  heroVideo.addEventListener("loadedmetadata", () => {
+    clearTimeout(videoLoadTimeout);
+    videoLoaded = true;
+    console.log("Video metadata loaded");
+    attemptPlayAfterLoad();
+  });
+
+  // Check when video can play through
+  heroVideo.addEventListener("canplaythrough", () => {
+    clearTimeout(videoLoadTimeout);
+    videoLoaded = true;
+    console.log("Video can play through");
+    attemptPlayAfterLoad();
+  });
+
+  // Additional check: if video readyState is 4 (HAVE_ENOUGH_DATA), it's fully loaded
+  heroVideo.addEventListener("loadeddata", () => {
+    if (heroVideo.readyState >= 4) {
+      videoLoaded = true;
+      clearTimeout(videoLoadTimeout);
+    }
+  });
+
+  // Play when video starts
+  heroVideo.addEventListener("playing", () => {
+    console.log("Video is now playing!");
+    videoLoaded = true;
+    clearTimeout(videoLoadTimeout);
+  });
+
+  // Initial check
+  checkVideoLoaded();
 
   // Enhanced user interaction handling (critical for Safari)
   const handleUserInteraction = () => {
