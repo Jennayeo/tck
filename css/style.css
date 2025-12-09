@@ -87,26 +87,29 @@ body {
 }
 
 .logo {
-  font-size: 26px;
-  font-weight: 700;
-  color: var(--primary-color);
+  display: flex;
+  align-items: center;
   text-decoration: none;
-  letter-spacing: 1px;
-  font-family: "Roboto", sans-serif;
   transition: var(--transition);
 }
 
-/* Bright text when over hero section (only when background is transparent) */
-.navbar.over-hero:not(:hover):not(.scrolled) .logo {
-  color: #ffffff;
-  text-shadow: 0 2px 4px rgba(0, 0, 0, 0.3);
+.logo-img {
+  height: 40px;
+  width: auto;
+  object-fit: contain;
+  transition: var(--transition);
+  filter: brightness(0) saturate(100%);
 }
 
-/* Dark text when background is white (hover or scrolled) */
-.navbar:hover .logo,
-.navbar.scrolled .logo {
-  color: var(--primary-color);
-  text-shadow: none;
+/* Bright logo when over hero section (only when background is transparent) */
+.navbar.over-hero:not(:hover):not(.scrolled) .logo-img {
+  filter: brightness(0) invert(1);
+}
+
+/* Dark logo when background is white (hover or scrolled) */
+.navbar:hover .logo-img,
+.navbar.scrolled .logo-img {
+  filter: brightness(0) saturate(100%);
 }
 
 .nav-menu {
@@ -402,8 +405,10 @@ body {
 }
 
 .hero-video[data-error="true"] {
-  display: none !important;
-  visibility: hidden !important;
+  /* Keep video visible even on error */
+  opacity: 1 !important;
+  display: block !important;
+  visibility: visible !important;
 }
 
 .hero-fallback-bg {
@@ -486,13 +491,15 @@ body {
   font-family: "Inter", "Helvetica Neue", "Arial", sans-serif;
   text-shadow: 0 4px 40px rgba(0, 0, 0, 0.8);
   text-transform: lowercase;
+  display: inline-block;
+  transform: translateY(-3px); /* 텍스트를 약간 위로 올림 */
 }
 
-/* EV Highlight in GM Blue */
+/* EV Highlight in GM Blue - matching logo color */
 .ev-highlight {
-  color: #0078d4;
+  color: #388bff; /* GM logo vibrant blue */
   font-weight: 700;
-  text-shadow: 0 0 40px rgba(0, 120, 212, 0.8), 0 4px 40px rgba(0, 0, 0, 0.8);
+  text-shadow: 0 0 40px rgba(0, 102, 204, 0.8), 0 4px 40px rgba(0, 0, 0, 0.8);
 }
 
 .hero-title-sub {
@@ -1135,6 +1142,13 @@ section#innovation .section-title .zero-text {
   color: var(--primary-color);
 }
 
+.about-image-img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  border-radius: 12px;
+}
+
 .about-image-placeholder {
   width: 100%;
   height: 500px;
@@ -1242,6 +1256,7 @@ section#innovation .section-title .zero-text {
   overflow: visible;
   perspective: 1500px;
   padding: 0 5%;
+  transform-style: preserve-3d;
 }
 
 .thumbnail-slide {
@@ -1249,47 +1264,87 @@ section#innovation .section-title .zero-text {
   width: 28%;
   max-width: 360px;
   min-width: 260px;
-  transition: all 0.5s ease;
+  transition: all 0.7s cubic-bezier(0.4, 0, 0.2, 1);
   opacity: 0.6;
-  transform: scale(0.85);
+  transform: scale(0.85) translateX(0) rotateY(0deg);
   z-index: 1;
   position: relative;
   will-change: transform, opacity, z-index;
+  transform-style: preserve-3d;
+  backface-visibility: hidden;
 }
 
 /* 중앙 슬라이드 (active) - 크고 앞으로 튀어나옴 */
 .thumbnail-slide.active {
   opacity: 1;
-  transform: scale(1.3) translateZ(30px);
+  transform: scale(1.3) translateZ(30px) translateX(0) rotateY(0deg);
   z-index: 10;
   width: 42%;
   max-width: 600px;
   min-width: 440px;
   filter: drop-shadow(0 25px 50px rgba(0, 0, 0, 0.3));
+  animation: rotateInCenter 0.7s cubic-bezier(0.4, 0, 0.2, 1) forwards;
 }
 
 /* 왼쪽 슬라이드 (prev) */
 .thumbnail-slide.prev {
   opacity: 0.75;
-  transform: scale(0.9) translateZ(-20px);
+  transform: scale(0.9) translateZ(-20px) translateX(-20%) rotateY(15deg);
   z-index: 2;
   filter: blur(1px);
+  animation: rotateInLeft 0.7s cubic-bezier(0.4, 0, 0.2, 1) forwards;
 }
 
 /* 오른쪽 슬라이드 (next) */
 .thumbnail-slide.next {
   opacity: 0.75;
-  transform: scale(0.9) translateZ(-20px);
+  transform: scale(0.9) translateZ(-20px) translateX(20%) rotateY(-15deg);
   z-index: 2;
   filter: blur(1px);
+  animation: rotateInRight 0.7s cubic-bezier(0.4, 0, 0.2, 1) forwards;
 }
 
 /* 더 멀리 있는 슬라이드는 더 작고 투명하게 */
 .thumbnail-slide:not(.active):not(.prev):not(.next) {
   opacity: 0.4;
-  transform: scale(0.75) translateZ(-40px);
+  transform: scale(0.75) translateZ(-40px) translateX(0) rotateY(0deg);
   z-index: 0;
   filter: blur(2px);
+  transition: all 0.7s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+/* 슬라이드 전환 애니메이션 - 회전 효과 포함 */
+@keyframes rotateInCenter {
+  0% {
+    opacity: 0.6;
+    transform: scale(0.9) translateZ(0px) translateX(0) rotateY(-25deg);
+  }
+  100% {
+    opacity: 1;
+    transform: scale(1.3) translateZ(30px) translateX(0) rotateY(0deg);
+  }
+}
+
+@keyframes rotateInLeft {
+  0% {
+    opacity: 0.4;
+    transform: scale(0.75) translateZ(-40px) translateX(-40%) rotateY(30deg);
+  }
+  100% {
+    opacity: 0.75;
+    transform: scale(0.9) translateZ(-20px) translateX(-20%) rotateY(15deg);
+  }
+}
+
+@keyframes rotateInRight {
+  0% {
+    opacity: 0.4;
+    transform: scale(0.75) translateZ(-40px) translateX(40%) rotateY(-30deg);
+  }
+  100% {
+    opacity: 0.75;
+    transform: scale(0.9) translateZ(-20px) translateX(20%) rotateY(-15deg);
+  }
 }
 
 .thumbnail-item {
@@ -1572,6 +1627,8 @@ section#innovation .section-title .zero-text {
   display: flex;
   align-items: center;
   justify-content: center;
+  z-index: 1;
+  pointer-events: none;
 }
 
 .carousel-slide {
@@ -1580,26 +1637,32 @@ section#innovation .section-title .zero-text {
   height: 100%;
   opacity: 0;
   transform: scale(0.9) translateX(100%);
-  transition: all 0.6s cubic-bezier(0.4, 0, 0.2, 1);
+  transition: opacity 0.6s cubic-bezier(0.4, 0, 0.2, 1),
+    transform 0.6s cubic-bezier(0.4, 0, 0.2, 1);
   z-index: 1;
+  pointer-events: none;
+  visibility: hidden;
 }
 
 .carousel-slide.prev {
   transform: scale(0.85) translateX(-100%);
   opacity: 0.4;
   z-index: 0;
+  visibility: visible;
 }
 
 .carousel-slide.active {
-  opacity: 1;
-  transform: scale(1) translateX(0);
+  opacity: 1 !important;
+  transform: scale(1) translateX(0) !important;
   z-index: 2;
+  visibility: visible;
 }
 
 .carousel-slide.next {
   transform: scale(0.85) translateX(100%);
   opacity: 0.4;
   z-index: 0;
+  visibility: visible;
 }
 
 .carousel-content {
@@ -1607,6 +1670,7 @@ section#innovation .section-title .zero-text {
   grid-template-columns: 1fr 1fr;
   width: 100%;
   height: 100%;
+  pointer-events: auto;
 }
 
 .carousel-image-section {
@@ -1749,9 +1813,12 @@ section#innovation .section-title .zero-text {
   display: flex;
   align-items: center;
   justify-content: center;
-  z-index: 10;
+  z-index: 1000 !important;
   transition: all 0.3s ease;
   backdrop-filter: blur(10px);
+  pointer-events: auto !important;
+  -webkit-tap-highlight-color: transparent;
+  touch-action: manipulation;
 }
 
 .carousel-btn:hover {

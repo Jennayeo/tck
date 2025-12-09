@@ -111,13 +111,29 @@ class ThumbnailCarousel {
     if (this.isTransitioning) return;
     this.isTransitioning = true;
 
+    // 기존 슬라이드에 fade-out 효과 추가 (약간만)
+    const slidesArray = Array.from(this.slides);
+    slidesArray.forEach((slide) => {
+      slide.style.transition = "opacity 0.3s ease, transform 0.3s ease";
+    });
+
     // 슬라이드를 중앙 기준으로 재배치
     this.rearrangeSlides();
+
+    // 새로 배치된 슬라이드가 부드럽게 나타나도록
+    requestAnimationFrame(() => {
+      const newSlides = this.container.querySelectorAll(".thumbnail-slide");
+      newSlides.forEach((slide) => {
+        slide.style.transition = "";
+        // 강제 리플로우로 애니메이션 트리거
+        slide.offsetHeight;
+      });
+    });
 
     // 전환 애니메이션 완료 후 플래그 해제
     setTimeout(() => {
       this.isTransitioning = false;
-    }, 500);
+    }, 700);
   }
 
   rearrangeSlides() {

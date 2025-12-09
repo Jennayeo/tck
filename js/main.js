@@ -472,10 +472,24 @@ if (heroVideo) {
   let videoLoaded = false;
 
   const checkVideoLoaded = () => {
+    // Log video state for debugging
+    console.log("Video state check:", {
+      readyState: heroVideo.readyState,
+      networkState: heroVideo.networkState,
+      src: heroVideo.currentSrc || heroVideo.src,
+      error: heroVideo.error,
+      paused: heroVideo.paused,
+      loaded: videoLoaded,
+    });
+
     // Check if video actually loaded and can play
     if (heroVideo.readyState === 0 && heroVideo.networkState === 3) {
       // Network error or source not found
-      console.warn("Video failed to load - network error");
+      console.error(
+        "Video failed to load - network error. NetworkState:",
+        heroVideo.networkState
+      );
+      console.error("Video URL:", heroVideo.currentSrc || heroVideo.src);
       if (!videoLoaded) {
         showFallback();
       }
@@ -486,35 +500,90 @@ if (heroVideo) {
     clearTimeout(videoLoadTimeout);
     videoLoadTimeout = setTimeout(() => {
       if (heroVideo.readyState < 2 && !videoLoaded) {
-        console.warn("Video taking too long to load, showing fallback");
+        console.error("Video taking too long to load!", {
+          readyState: heroVideo.readyState,
+          networkState: heroVideo.networkState,
+          src: heroVideo.currentSrc || heroVideo.src,
+          error: heroVideo.error,
+        });
+        console.error("Possible causes:");
+        console.error(
+          "1. CORS issue - video server may not allow cross-origin requests"
+        );
+        console.error(
+          "2. Referer/Origin restriction - video URL may be restricted to specific domains"
+        );
+        console.error("3. Network connectivity issue");
+        console.error("4. Video URL expired or invalid");
+
         showFallback();
+        // Keep trying to load and play
+        heroVideo.load();
+        setTimeout(() => playVideo(0), 1000);
       }
-    }, 10000); // 10 second timeout
+    }, 15000); // 15 second timeout - longer to allow video to load
   };
 
   const showFallback = () => {
-    heroVideo.style.display = "none";
-    heroVideo.setAttribute("data-error", "true");
+    // Don't hide video, just show fallback as background
+    // heroVideo.style.display = "none";
+    // heroVideo.setAttribute("data-error", "true");
     const fallbackBg = document.querySelector(".hero-fallback-bg");
     if (fallbackBg) {
       fallbackBg.style.display = "block";
+      fallbackBg.style.zIndex = "-1";
       // Force opacity to show fallback immediately
       setTimeout(() => {
         fallbackBg.style.opacity = "1";
       }, 100);
     }
+    // Keep trying to play video
+    setTimeout(() => {
+      playVideo(0).catch(() => {});
+    }, 2000);
   };
 
   // Error handling - network errors, CORS, format errors
   heroVideo.addEventListener("error", (e) => {
-    console.warn("Video error:", e);
+    console.error("=== VIDEO ERROR ===");
+    console.error("Event:", e);
     const error = heroVideo.error;
     if (error) {
-      console.error("Video error code:", error.code, "Message:", error.message);
+      console.error("Error code:", error.code);
+      console.error("Error message:", error.message);
+      console.error("Video URL:", heroVideo.currentSrc || heroVideo.src);
+      console.error("Network state:", heroVideo.networkState);
+      console.error("Ready state:", heroVideo.readyState);
+
+      // Error code meanings:
+      // 1 = MEDIA_ERR_ABORTED
+      // 2 = MEDIA_ERR_NETWORK (CORS, network, 403, 404, etc.)
+      // 3 = MEDIA_ERR_DECODE
+      // 4 = MEDIA_ERR_SRC_NOT_SUPPORTED
+
+      if (error.code === 2) {
+        console.error("NETWORK ERROR - Possible causes:");
+        console.error(
+          "- CORS: Video server doesn't allow cross-origin requests"
+        );
+        console.error(
+          "- Referer restriction: Video URL may only work from specific domains"
+        );
+        console.error("- Authentication: Video URL may require authentication");
+        console.error("- 403/404: Video URL may be invalid or expired");
+        console.error("- Network: Firewall or connectivity issue");
+      }
+
       // Error code 2 = NETWORK_ERROR, 3 = DECODE_ERROR, 4 = SRC_NOT_SUPPORTED
       if (error.code >= 2) {
-        heroVideo.setAttribute("data-error", "true");
+        // Show fallback but keep trying video
         showFallback();
+        // Retry loading video after delay
+        setTimeout(() => {
+          console.log("Retrying video load after error...");
+          heroVideo.load();
+          setTimeout(() => playVideo(0), 500);
+        }, 3000);
       }
     }
   });
