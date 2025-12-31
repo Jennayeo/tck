@@ -519,6 +519,8 @@ if (heroVideo) {
           src: heroVideo.currentSrc || heroVideo.src,
           error: heroVideo.error,
         });
+        console.warn("Showing fallback background due to slow video load");
+        showFallback();
         console.error("Possible causes:");
         console.error(
           "1. CORS issue - video server may not allow cross-origin requests"
