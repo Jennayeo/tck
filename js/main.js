@@ -23,8 +23,8 @@ window.addEventListener("scroll", () => {
   lastScroll = currentScroll;
 });
 
-// Check initial state on load
-window.addEventListener("load", () => {
+// Check initial state on load and DOMContentLoaded
+function setInitialNavbarState() {
   const currentScroll = window.pageYOffset;
   const heroHeight = heroSection
     ? heroSection.offsetHeight
@@ -32,8 +32,21 @@ window.addEventListener("load", () => {
 
   if (currentScroll < heroHeight - 80) {
     navbar.classList.add("over-hero");
+    navbar.classList.remove("scrolled");
+  } else {
+    navbar.classList.remove("over-hero");
+    navbar.classList.add("scrolled");
   }
-});
+}
+
+// Set initial state as early as possible
+if (document.readyState === "loading") {
+  document.addEventListener("DOMContentLoaded", setInitialNavbarState);
+} else {
+  setInitialNavbarState();
+}
+
+window.addEventListener("load", setInitialNavbarState);
 
 // ===========================
 // Mobile Menu Toggle

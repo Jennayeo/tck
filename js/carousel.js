@@ -55,7 +55,7 @@ class ValuesCarousel {
       // 버튼이 클릭 가능하도록 확실히 설정
       this.prevBtn.style.pointerEvents = "auto";
       this.prevBtn.style.zIndex = "1000";
-      this.prevBtn.style.position = "relative";
+      this.prevBtn.style.position = "absolute";
     } else {
       console.error("Previous button not found");
     }
@@ -77,7 +77,7 @@ class ValuesCarousel {
       // 버튼이 클릭 가능하도록 확실히 설정
       this.nextBtn.style.pointerEvents = "auto";
       this.nextBtn.style.zIndex = "1000";
-      this.nextBtn.style.position = "relative";
+      this.nextBtn.style.position = "absolute";
     } else {
       console.error("Next button not found");
     }

@@ -14,10 +14,12 @@ class LanguageToggle {
 
     // 토글 버튼 이벤트
     if (this.toggleButton) {
-      this.toggleButton.addEventListener("click", () => {
+      this.toggleButton.addEventListener("click", (e) => {
         this.currentLanguage = this.currentLanguage === "kr" ? "en" : "kr";
         this.setLanguage(this.currentLanguage);
         localStorage.setItem("language", this.currentLanguage);
+        // 모바일에서 포커스 제거하여 배경색이 남지 않도록
+        this.toggleButton.blur();
       });
     }
   }

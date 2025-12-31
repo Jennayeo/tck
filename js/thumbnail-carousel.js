@@ -5,7 +5,7 @@ class ThumbnailCarousel {
     this.slides = document.querySelectorAll(".thumbnail-slide");
     this.prevBtn = document.getElementById("thumbnailCarouselPrev");
     this.nextBtn = document.getElementById("thumbnailCarouselNext");
-    this.currentIndex = 0;
+    this.currentIndex = 2; // 디폴트를 3번 슬라이드로 설정 (인덱스는 0부터 시작)
     this.totalSlides = this.slides.length;
     this.isTransitioning = false;
 
@@ -26,6 +26,11 @@ class ThumbnailCarousel {
     }
 
     this.init();
+    
+    // 화면 크기 변경 시 재계산
+    window.addEventListener('resize', () => {
+      this.updateSlides();
+    });
   }
 
   init() {
@@ -69,6 +74,7 @@ class ThumbnailCarousel {
 
     // 초기 슬라이드 설정
     this.updateSlides();
+    this.updateCounter();
   }
 
   isElementInViewport(el) {
@@ -111,86 +117,46 @@ class ThumbnailCarousel {
     if (this.isTransitioning) return;
     this.isTransitioning = true;
 
-    // 기존 슬라이드에 fade-out 효과 추가 (약간만)
-    const slidesArray = Array.from(this.slides);
-    slidesArray.forEach((slide) => {
-      slide.style.transition = "opacity 0.3s ease, transform 0.3s ease";
+    // 모든 슬라이드에서 active 클래스 제거
+    this.slides.forEach((slide) => {
+      slide.classList.remove('active');
     });
 
-    // 슬라이드를 중앙 기준으로 재배치
-    this.rearrangeSlides();
+    // 현재 슬라이드에 active 클래스 추가
+    if (this.slides[this.currentIndex]) {
+      this.slides[this.currentIndex].classList.add('active');
+    }
 
-    // 새로 배치된 슬라이드가 부드럽게 나타나도록
-    requestAnimationFrame(() => {
-      const newSlides = this.container.querySelectorAll(".thumbnail-slide");
-      newSlides.forEach((slide) => {
-        slide.style.transition = "";
-        // 강제 리플로우로 애니메이션 트리거
-        slide.offsetHeight;
-      });
-    });
-
+    // 모바일 여부 확인
+    const isMobile = window.innerWidth <= 768;
+    
+    // 컨테이너를 부드럽게 이동시키기 위해 translateX 사용
+    // 각 슬라이드가 33.333% 너비이므로, 현재 슬라이드를 중앙에 위치시키려면
+    // translateX = -currentIndex * 33.333% + 33.333%
+    let translateX;
+    
+    if (isMobile) {
+      // 모바일: 3등분 레이아웃 (33.333% 너비), 중앙(2번째)에 배치
+      const slideWidthPercent = 33.333;
+      // 중앙에 배치하기 위한 오프셋: (100% - 33.333%) / 2 = 33.333%
+      const centerOffset = (100 - slideWidthPercent) / 2;
+      // 각 슬라이드마다 33.333%씩 왼쪽으로 이동
+      translateX = centerOffset - this.currentIndex * slideWidthPercent;
+    } else {
+      // 데스크톱: 중앙 정렬 (33.333% 너비)
+      const slideWidthPercent = 33.333;
+      // 중앙에 배치하기 위한 오프셋: (100% - 33.333%) / 2 = 33.333%
+      const centerOffset = (100 - slideWidthPercent) / 2;
+      // 각 슬라이드마다 33.333%씩 왼쪽으로 이동
+      translateX = centerOffset - this.currentIndex * slideWidthPercent;
+    }
+    
+    this.container.style.transform = `translateX(${translateX}%)`;
+    
     // 전환 애니메이션 완료 후 플래그 해제
     setTimeout(() => {
       this.isTransitioning = false;
-    }, 700);
-  }
-
-  rearrangeSlides() {
-    // 모든 슬라이드를 배열로 가져오기
-    const slidesArray = Array.from(this.slides);
-
-    // 현재 슬라이드
-    const currentSlide = slidesArray[this.currentIndex];
-
-    // 이전 슬라이드 인덱스
-    const prevIndex =
-      this.currentIndex === 0 ? this.totalSlides - 1 : this.currentIndex - 1;
-
-    // 다음 슬라이드 인덱스
-    const nextIndex =
-      this.currentIndex === this.totalSlides - 1 ? 0 : this.currentIndex + 1;
-
-    // DOM에서 모든 슬라이드 제거
-    slidesArray.forEach((slide) => {
-      if (slide.parentNode) {
-        slide.parentNode.removeChild(slide);
-      }
-    });
-
-    // 모든 클래스 제거
-    slidesArray.forEach((slide) => {
-      slide.classList.remove("active", "prev", "next");
-    });
-
-    // 중앙 강조 순서로 재배치: [prev, active, next, ...others]
-    const prevSlide = slidesArray[prevIndex];
-    const nextSlide = slidesArray[nextIndex];
-
-    if (prevSlide) {
-      prevSlide.classList.add("prev");
-      this.container.appendChild(prevSlide);
-    }
-
-    if (currentSlide) {
-      currentSlide.classList.add("active");
-      this.container.appendChild(currentSlide);
-    }
-
-    if (nextSlide) {
-      nextSlide.classList.add("next");
-      this.container.appendChild(nextSlide);
-    }
-
-    // 나머지 슬라이드 추가
-    slidesArray.forEach((slide, idx) => {
-      if (idx !== this.currentIndex && idx !== prevIndex && idx !== nextIndex) {
-        this.container.appendChild(slide);
-      }
-    });
-
-    // slides NodeList 업데이트
-    this.slides = this.container.querySelectorAll(".thumbnail-slide");
+    }, 600);
   }
 
   updateCounter() {
