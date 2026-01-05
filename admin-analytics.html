@@ -1,265 +1,279 @@
 <!DOCTYPE html>
 <html lang="ko">
-<head>
+  <head>
     <!-- Google tag (gtag.js) -->
-    <script async src="https://www.googletagmanager.com/gtag/js?id=G-5C6D295T8N"></script>
+    <script
+      async
+      src="https://www.googletagmanager.com/gtag/js?id=G-5C6D295T8N"
+    ></script>
     <script>
       window.dataLayer = window.dataLayer || [];
-      function gtag(){dataLayer.push(arguments);}
-      gtag('js', new Date());
-      gtag('config', 'G-5C6D295T8N');
+      function gtag() {
+        dataLayer.push(arguments);
+      }
+      gtag("js", new Date());
+      gtag("config", "G-5C6D295T8N");
     </script>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>소셜 미디어 분석 - GMTCK 관리자</title>
-    <link rel="preconnect" href="https://fonts.googleapis.com">
-    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@300;400;500;700;900&family=Noto+Sans+KR:wght@300;400;500;600;700;900&display=swap" rel="stylesheet">
-    <link rel="stylesheet" href="css/admin.css">
-    <link rel="stylesheet" href="css/analytics.css">
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Roboto:wght@300;400;500;700;900&family=Noto+Sans+KR:wght@300;400;500;600;700;900&display=swap"
+      rel="stylesheet"
+    />
+    <link rel="stylesheet" href="css/admin.css" />
+    <link rel="stylesheet" href="css/analytics.css" />
     <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
     <!-- YouTube API Scripts -->
     <script src="js/youtube-config.js"></script>
     <script src="js/youtube-api.js"></script>
     <script src="js/youtube-sync.js"></script>
-</head>
-<body>
+  </head>
+  <body>
     <!-- Top Navigation -->
     <nav class="admin-nav">
-        <div class="nav-container">
-            <div class="nav-brand">
-                <h1>GMTCK 관리자</h1>
-            </div>
-            <div class="nav-user">
-                <span id="userName"></span>
-                <button class="btn-logout" id="btnLogout">로그아웃</button>
-            </div>
+      <div class="nav-container">
+        <div class="nav-brand">
+          <h1>GMTCK 관리자</h1>
         </div>
+        <div class="nav-user">
+          <span id="userName"></span>
+          <button class="btn-logout" id="btnLogout">로그아웃</button>
+        </div>
+      </div>
     </nav>
 
     <!-- Main Content -->
     <div class="admin-container">
-        <!-- Sidebar -->
-        <aside class="sidebar">
-            <div class="sidebar-menu">
-                <a href="admin-analytics.html" class="menu-item active">
-                    <span class="icon">📊</span>
-                    <span>대시보드</span>
-                </a>
-                <a href="admin-dashboard.html" class="menu-item">
-                    <span class="icon">✏️</span>
-                    <span>컨텐츠 편집</span>
-                </a>
-                <div class="menu-divider"></div>
-                <button class="menu-item submenu-toggle" data-target="youtube">
-                    <span class="icon">📺</span>
-                    <span>YouTube</span>
-                </button>
-                <button class="menu-item submenu-toggle" data-target="linkedin">
-                    <span class="icon">💼</span>
-                    <span>LinkedIn</span>
-                </button>
+      <!-- Sidebar -->
+      <aside class="sidebar">
+        <div class="sidebar-menu">
+          <a href="admin-analytics.html" class="menu-item active">
+            <span class="icon">📊</span>
+            <span>대시보드</span>
+          </a>
+          <a href="admin-dashboard.html" class="menu-item">
+            <span class="icon">✏️</span>
+            <span>컨텐츠 편집</span>
+          </a>
+          <div class="menu-divider"></div>
+          <button class="menu-item submenu-toggle" data-target="youtube">
+            <span class="icon">📺</span>
+            <span>YouTube</span>
+          </button>
+          <button class="menu-item submenu-toggle" data-target="linkedin">
+            <span class="icon">💼</span>
+            <span>LinkedIn</span>
+          </button>
+        </div>
+        <div class="sidebar-footer">
+          <a href="index.html" target="_blank" class="btn-preview">
+            <span>🌐</span> 사이트 미리보기
+          </a>
+        </div>
+      </aside>
+
+      <!-- Content Area -->
+      <main class="content-area">
+        <div class="content-header">
+          <div>
+            <h2>소셜 미디어 분석 대시보드</h2>
+            <p class="header-subtitle">
+              YouTube 및 LinkedIn 성과를 한눈에 확인하세요
+            </p>
+          </div>
+          <div class="header-actions">
+            <button class="btn-sync" id="btnSyncYouTube">
+              <span>📺</span> YouTube 동기화
+            </button>
+            <button class="btn-refresh" id="btnRefresh">
+              <span>🔄</span> 새로고침
+            </button>
+          </div>
+        </div>
+
+        <!-- Summary Cards -->
+        <div class="summary-cards">
+          <div class="summary-card youtube-card">
+            <div class="card-icon">📺</div>
+            <div class="card-content">
+              <h3>YouTube</h3>
+              <div class="card-stats">
+                <div class="stat-item">
+                  <p class="stat-label">총 조회수</p>
+                  <p class="stat-value" id="ytTotalViews">-</p>
+                </div>
+                <div class="stat-item">
+                  <p class="stat-label">구독자</p>
+                  <p class="stat-value" id="ytSubscribers">-</p>
+                </div>
+              </div>
+              <div class="card-trend" id="ytTrend">
+                <span class="trend-icon">📈</span>
+                <span class="trend-text">전월 대비 +12.5%</span>
+              </div>
             </div>
-            <div class="sidebar-footer">
-                <a href="index.html" target="_blank" class="btn-preview">
-                    <span>🌐</span> 사이트 미리보기
-                </a>
+          </div>
+
+          <div class="summary-card linkedin-card">
+            <div class="card-icon">💼</div>
+            <div class="card-content">
+              <h3>LinkedIn</h3>
+              <div class="card-stats">
+                <div class="stat-item">
+                  <p class="stat-label">팔로워</p>
+                  <p class="stat-value" id="liFollowers">-</p>
+                </div>
+                <div class="stat-item">
+                  <p class="stat-label">노출 수</p>
+                  <p class="stat-value" id="liImpressions">-</p>
+                </div>
+              </div>
+              <div class="card-trend" id="liTrend">
+                <span class="trend-icon">📈</span>
+                <span class="trend-text">전월 대비 +8.3%</span>
+              </div>
             </div>
-        </aside>
+          </div>
 
-        <!-- Content Area -->
-        <main class="content-area">
-            <div class="content-header">
-                <div>
-                    <h2>소셜 미디어 분석 대시보드</h2>
-                    <p class="header-subtitle">YouTube 및 LinkedIn 성과를 한눈에 확인하세요</p>
+          <div class="summary-card engagement-card">
+            <div class="card-icon">💬</div>
+            <div class="card-content">
+              <h3>평균 참여율</h3>
+              <div class="card-stats">
+                <div class="stat-item">
+                  <p class="stat-label">YouTube</p>
+                  <p class="stat-value" id="ytEngagement">-</p>
                 </div>
-                <div class="header-actions">
-                    <button class="btn-sync" id="btnSyncYouTube">
-                        <span>📺</span> YouTube 동기화
-                    </button>
-                    <button class="btn-refresh" id="btnRefresh">
-                        <span>🔄</span> 새로고침
-                    </button>
+                <div class="stat-item">
+                  <p class="stat-label">LinkedIn</p>
+                  <p class="stat-value" id="liEngagement">-</p>
                 </div>
+              </div>
+              <div class="card-trend">
+                <span class="trend-icon">⭐</span>
+                <span class="trend-text">업계 평균 대비 우수</span>
+              </div>
             </div>
+          </div>
+        </div>
 
-            <!-- Summary Cards -->
-            <div class="summary-cards">
-                <div class="summary-card youtube-card">
-                    <div class="card-icon">📺</div>
-                    <div class="card-content">
-                        <h3>YouTube</h3>
-                        <div class="card-stats">
-                            <div class="stat-item">
-                                <p class="stat-label">총 조회수</p>
-                                <p class="stat-value" id="ytTotalViews">-</p>
-                            </div>
-                            <div class="stat-item">
-                                <p class="stat-label">구독자</p>
-                                <p class="stat-value" id="ytSubscribers">-</p>
-                            </div>
-                        </div>
-                        <div class="card-trend" id="ytTrend">
-                            <span class="trend-icon">📈</span>
-                            <span class="trend-text">전월 대비 +12.5%</span>
-                        </div>
-                    </div>
-                </div>
-
-                <div class="summary-card linkedin-card">
-                    <div class="card-icon">💼</div>
-                    <div class="card-content">
-                        <h3>LinkedIn</h3>
-                        <div class="card-stats">
-                            <div class="stat-item">
-                                <p class="stat-label">팔로워</p>
-                                <p class="stat-value" id="liFollowers">-</p>
-                            </div>
-                            <div class="stat-item">
-                                <p class="stat-label">노출 수</p>
-                                <p class="stat-value" id="liImpressions">-</p>
-                            </div>
-                        </div>
-                        <div class="card-trend" id="liTrend">
-                            <span class="trend-icon">📈</span>
-                            <span class="trend-text">전월 대비 +8.3%</span>
-                        </div>
-                    </div>
-                </div>
-
-                <div class="summary-card engagement-card">
-                    <div class="card-icon">💬</div>
-                    <div class="card-content">
-                        <h3>평균 참여율</h3>
-                        <div class="card-stats">
-                            <div class="stat-item">
-                                <p class="stat-label">YouTube</p>
-                                <p class="stat-value" id="ytEngagement">-</p>
-                            </div>
-                            <div class="stat-item">
-                                <p class="stat-label">LinkedIn</p>
-                                <p class="stat-value" id="liEngagement">-</p>
-                            </div>
-                        </div>
-                        <div class="card-trend">
-                            <span class="trend-icon">⭐</span>
-                            <span class="trend-text">업계 평균 대비 우수</span>
-                        </div>
-                    </div>
-                </div>
+        <!-- Charts Section -->
+        <div class="charts-grid">
+          <!-- YouTube Charts -->
+          <div class="chart-card">
+            <div class="chart-header">
+              <h3>📺 YouTube 조회수 추이</h3>
+              <select class="chart-period" id="ytPeriod">
+                <option value="6">최근 6개월</option>
+                <option value="3">최근 3개월</option>
+                <option value="1">최근 1개월</option>
+              </select>
             </div>
-
-            <!-- Charts Section -->
-            <div class="charts-grid">
-                <!-- YouTube Charts -->
-                <div class="chart-card">
-                    <div class="chart-header">
-                        <h3>📺 YouTube 조회수 추이</h3>
-                        <select class="chart-period" id="ytPeriod">
-                            <option value="6">최근 6개월</option>
-                            <option value="3">최근 3개월</option>
-                            <option value="1">최근 1개월</option>
-                        </select>
-                    </div>
-                    <div class="chart-container" style="height: 300px;">
-                        <canvas id="youtubeViewsChart"></canvas>
-                    </div>
-                </div>
-
-                <div class="chart-card">
-                    <div class="chart-header">
-                        <h3>📺 YouTube 구독자 성장</h3>
-                    </div>
-                    <div class="chart-container" style="height: 300px;">
-                        <canvas id="youtubeSubscribersChart"></canvas>
-                    </div>
-                </div>
-
-                <!-- LinkedIn Charts -->
-                <div class="chart-card">
-                    <div class="chart-header">
-                        <h3>💼 LinkedIn 팔로워 성장</h3>
-                        <select class="chart-period" id="liPeriod">
-                            <option value="6">최근 6개월</option>
-                            <option value="3">최근 3개월</option>
-                            <option value="1">최근 1개월</option>
-                        </select>
-                    </div>
-                    <div class="chart-container" style="height: 300px;">
-                        <canvas id="linkedinFollowersChart"></canvas>
-                    </div>
-                </div>
-
-                <div class="chart-card">
-                    <div class="chart-header">
-                        <h3>💼 LinkedIn 참여도</h3>
-                    </div>
-                    <div class="chart-container" style="height: 300px;">
-                        <canvas id="linkedinEngagementChart"></canvas>
-                    </div>
-                </div>
-
-                <!-- Comparison Chart -->
-                <div class="chart-card full-width">
-                    <div class="chart-header">
-                        <h3>📊 플랫폼 참여율 비교</h3>
-                    </div>
-                    <div class="chart-container" style="height: 350px;">
-                        <canvas id="comparisonChart"></canvas>
-                    </div>
-                </div>
+            <div class="chart-container" style="height: 300px">
+              <canvas id="youtubeViewsChart"></canvas>
             </div>
+          </div>
 
-            <!-- Data Table Section -->
-            <div class="data-section">
-                <div class="section-header">
-                    <h3>📋 상세 데이터</h3>
-                    <div class="tab-buttons">
-                        <button class="tab-btn active" data-tab="youtube">YouTube</button>
-                        <button class="tab-btn" data-tab="linkedin">LinkedIn</button>
-                    </div>
-                </div>
-                
-                <div class="data-table-container" id="youtubeTable">
-                    <table class="data-table">
-                        <thead>
-                            <tr>
-                                <th>날짜</th>
-                                <th>조회수</th>
-                                <th>구독자</th>
-                                <th>영상 수</th>
-                                <th>시청 시간</th>
-                                <th>참여율</th>
-                            </tr>
-                        </thead>
-                        <tbody id="ytTableBody">
-                            <!-- Data will be loaded here -->
-                        </tbody>
-                    </table>
-                </div>
-
-                <div class="data-table-container" id="linkedinTable" style="display: none;">
-                    <table class="data-table">
-                        <thead>
-                            <tr>
-                                <th>날짜</th>
-                                <th>팔로워</th>
-                                <th>게시물</th>
-                                <th>노출 수</th>
-                                <th>참여 수</th>
-                                <th>참여율</th>
-                            </tr>
-                        </thead>
-                        <tbody id="liTableBody">
-                            <!-- Data will be loaded here -->
-                        </tbody>
-                    </table>
-                </div>
+          <div class="chart-card">
+            <div class="chart-header">
+              <h3>📺 YouTube 구독자 성장</h3>
             </div>
-        </main>
+            <div class="chart-container" style="height: 300px">
+              <canvas id="youtubeSubscribersChart"></canvas>
+            </div>
+          </div>
+
+          <!-- LinkedIn Charts -->
+          <div class="chart-card">
+            <div class="chart-header">
+              <h3>💼 LinkedIn 팔로워 성장</h3>
+              <select class="chart-period" id="liPeriod">
+                <option value="6">최근 6개월</option>
+                <option value="3">최근 3개월</option>
+                <option value="1">최근 1개월</option>
+              </select>
+            </div>
+            <div class="chart-container" style="height: 300px">
+              <canvas id="linkedinFollowersChart"></canvas>
+            </div>
+          </div>
+
+          <div class="chart-card">
+            <div class="chart-header">
+              <h3>💼 LinkedIn 참여도</h3>
+            </div>
+            <div class="chart-container" style="height: 300px">
+              <canvas id="linkedinEngagementChart"></canvas>
+            </div>
+          </div>
+
+          <!-- Comparison Chart -->
+          <div class="chart-card full-width">
+            <div class="chart-header">
+              <h3>📊 플랫폼 참여율 비교</h3>
+            </div>
+            <div class="chart-container" style="height: 350px">
+              <canvas id="comparisonChart"></canvas>
+            </div>
+          </div>
+        </div>
+
+        <!-- Data Table Section -->
+        <div class="data-section">
+          <div class="section-header">
+            <h3>📋 상세 데이터</h3>
+            <div class="tab-buttons">
+              <button class="tab-btn active" data-tab="youtube">YouTube</button>
+              <button class="tab-btn" data-tab="linkedin">LinkedIn</button>
+            </div>
+          </div>
+
+          <div class="data-table-container" id="youtubeTable">
+            <table class="data-table">
+              <thead>
+                <tr>
+                  <th>날짜</th>
+                  <th>조회수</th>
+                  <th>구독자</th>
+                  <th>영상 수</th>
+                  <th>시청 시간</th>
+                  <th>참여율</th>
+                </tr>
+              </thead>
+              <tbody id="ytTableBody">
+                <!-- Data will be loaded here -->
+              </tbody>
+            </table>
+          </div>
+
+          <div
+            class="data-table-container"
+            id="linkedinTable"
+            style="display: none"
+          >
+            <table class="data-table">
+              <thead>
+                <tr>
+                  <th>날짜</th>
+                  <th>팔로워</th>
+                  <th>게시물</th>
+                  <th>노출 수</th>
+                  <th>참여 수</th>
+                  <th>참여율</th>
+                </tr>
+              </thead>
+              <tbody id="liTableBody">
+                <!-- Data will be loaded here -->
+              </tbody>
+            </table>
+          </div>
+        </div>
+      </main>
     </div>
 
     <script src="js/analytics.js"></script>
-</body>
+  </body>
 </html>
