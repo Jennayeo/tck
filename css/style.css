@@ -1059,6 +1059,11 @@ section#innovation .section-title .zero-text {
 
 .technology-stats-overlay .stat-item {
   text-align: center;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: flex-start;
+  height: 100%;
 }
 
 .technology-stats-overlay .stat-number {
@@ -1068,6 +1073,7 @@ section#innovation .section-title .zero-text {
   color: var(--bg-white);
   margin-bottom: 8px;
   text-shadow: 0 4px 20px rgba(0, 0, 0, 0.5);
+  flex-shrink: 0;
 }
 
 .technology-stats-overlay .stat-label {
@@ -1081,6 +1087,10 @@ section#innovation .section-title .zero-text {
   overflow-wrap: break-word;
   hyphens: auto;
   max-width: 100%;
+  min-height: 2.8em;
+  display: flex;
+  align-items: center;
+  justify-content: center;
 }
 
 .tech-circle {
