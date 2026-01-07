@@ -109,7 +109,7 @@ body {
 }
 
 .logo-img {
-  height: 100px;
+  height: 130px;
   width: auto;
   object-fit: contain;
   transition: var(--transition);
@@ -2706,6 +2706,7 @@ section#innovation .section-title .zero-text {
   /* Technology 섹션 */
   .technology {
     padding: 80px 0;
+    scroll-margin-top: 100px;
   }
 
   .technology-text {
@@ -2784,7 +2785,7 @@ section#innovation .section-title .zero-text {
 
   /* Navigation */
   .logo-img {
-    height: 80px;
+    height: 110px;
   }
 
   .nav-content {
@@ -2842,6 +2843,7 @@ section#innovation .section-title .zero-text {
   /* Technology */
   .technology {
     padding: 60px 0;
+    scroll-margin-top: 120px;
   }
 
   .technology-text {
