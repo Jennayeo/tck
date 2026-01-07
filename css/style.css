@@ -2718,6 +2718,19 @@ section#innovation .section-title .zero-text {
     padding-right: 0;
     text-align: center;
   }
+  
+  .technology .section-title {
+    font-size: clamp(22px, 5.5vw, 30px);
+    flex-direction: row;
+    flex-wrap: nowrap;
+    gap: 0.3em;
+    white-space: nowrap;
+  }
+  
+  .technology .section-title .title-line {
+    display: inline-block;
+    white-space: nowrap;
+  }
 
   .technology-description {
     font-size: 16px;
@@ -2857,8 +2870,17 @@ section#innovation .section-title .zero-text {
   }
 
   .technology .section-title {
-    font-size: clamp(24px, 7vw, 32px);
+    font-size: clamp(20px, 5.5vw, 28px);
     margin-bottom: 20px;
+    flex-direction: row;
+    flex-wrap: nowrap;
+    gap: 0.3em;
+    white-space: nowrap;
+  }
+  
+  .technology .section-title .title-line {
+    display: inline-block;
+    white-space: nowrap;
   }
 
   .technology-description {
