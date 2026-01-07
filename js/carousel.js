@@ -5,12 +5,14 @@ class ValuesCarousel {
     this.slides = document.querySelectorAll(".carousel-slide");
     this.prevBtn = document.getElementById("carouselPrev");
     this.nextBtn = document.getElementById("carouselNext");
+    this.pauseBtn = document.getElementById("carouselPause");
     this.currentIndex = 0;
     this.totalSlides = this.slides.length;
     this.autoPlayInterval = null;
     this.autoPlayDelay = 5000; // 5초
     this.isAnimating = false;
     this.animationTimeout = null;
+    this.isPaused = false; // 초기값: 재생 중
 
     console.log(`Carousel initialized with ${this.totalSlides} slides`);
     console.log(
@@ -82,6 +84,23 @@ class ValuesCarousel {
       console.error("Next button not found");
     }
 
+    // 정지/재생 버튼 이벤트 리스너
+    if (this.pauseBtn) {
+      const newPauseBtn = this.pauseBtn.cloneNode(true);
+      this.pauseBtn.parentNode.replaceChild(newPauseBtn, this.pauseBtn);
+      this.pauseBtn = newPauseBtn;
+
+      this.pauseBtn.addEventListener("click", (e) => {
+        e.preventDefault();
+        e.stopPropagation();
+        e.stopImmediatePropagation();
+        this.togglePause();
+      });
+      this.pauseBtn.style.pointerEvents = "auto";
+      this.pauseBtn.style.zIndex = "1000";
+      this.pauseBtn.style.position = "absolute";
+    }
+
     // 키보드 네비게이션
     this.section = document.getElementById("valuesCarousel");
     if (this.section) {
@@ -93,6 +112,9 @@ class ValuesCarousel {
         } else if (e.key === "ArrowRight") {
           e.preventDefault();
           this.goToNext();
+        } else if (e.key === " " || e.key === "Spacebar") {
+          e.preventDefault();
+          this.togglePause();
         }
       });
     }
@@ -237,6 +259,9 @@ class ValuesCarousel {
   }
 
   startAutoPlay() {
+    if (this.isPaused) {
+      return; // 정지 상태면 시작하지 않음
+    }
     this.stopAutoPlay();
     // 자동 재생 시작
     this.autoPlayInterval = setInterval(() => {
@@ -247,6 +272,24 @@ class ValuesCarousel {
       this.goToNext();
     }, this.autoPlayDelay);
     console.log("Auto-play started");
+  }
+
+  togglePause() {
+    this.isPaused = !this.isPaused;
+    const pauseIcon = this.pauseBtn?.querySelector(".pause-icon");
+    const playIcon = this.pauseBtn?.querySelector(".play-icon");
+
+    if (this.isPaused) {
+      this.stopAutoPlay();
+      if (pauseIcon) pauseIcon.style.display = "none";
+      if (playIcon) playIcon.style.display = "block";
+      console.log("Carousel paused");
+    } else {
+      this.startAutoPlay();
+      if (pauseIcon) pauseIcon.style.display = "block";
+      if (playIcon) playIcon.style.display = "none";
+      console.log("Carousel resumed");
+    }
   }
 
   stopAutoPlay() {
