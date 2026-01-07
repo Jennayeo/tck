@@ -2120,6 +2120,14 @@ section#innovation .section-title .zero-text {
   .technology .section-title .title-line {
     white-space: nowrap !important;
   }
+  
+  .technology-stats-overlay .stat-number {
+    font-size: clamp(36px, 5vw, 56px);
+  }
+  
+  .technology-stats-overlay .stat-label {
+    font-size: clamp(11px, 1.3vw, 14px);
+  }
 
   .technology-visual {
     height: 400px;
@@ -2227,6 +2235,14 @@ section#innovation .section-title .zero-text {
 
   .technology .section-title .title-line {
     white-space: nowrap !important;
+  }
+  
+  .technology-stats-overlay .stat-number {
+    font-size: clamp(32px, 4.5vw, 48px);
+  }
+  
+  .technology-stats-overlay .stat-label {
+    font-size: clamp(10px, 1.2vw, 13px);
   }
 
   .carousel-header {
@@ -2884,6 +2900,14 @@ section#innovation .section-title .zero-text {
 
   .technology .section-title .title-line {
     white-space: nowrap !important;
+  }
+  
+  .technology-stats-overlay .stat-number {
+    font-size: clamp(28px, 4vw, 42px);
+  }
+  
+  .technology-stats-overlay .stat-label {
+    font-size: clamp(9px, 1.1vw, 12px);
   }
 
   .technology-description {
