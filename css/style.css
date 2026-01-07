@@ -973,10 +973,15 @@ section {
   display: flex;
   flex-direction: column;
   gap: 0.5em;
+  flex-wrap: nowrap !important;
 }
 
 .technology .section-title .title-line {
-  display: block;
+  display: inline-block !important;
+  white-space: nowrap !important;
+  overflow: hidden;
+  word-break: keep-all !important;
+  max-width: 100%;
 }
 
 .technology .section-title .zero-text,
@@ -2115,16 +2120,21 @@ section#innovation .section-title .zero-text {
 
   .technology .section-title {
     font-size: clamp(22px, 3.5vw, 36px);
+    flex-wrap: nowrap !important;
   }
 
   .technology .section-title .title-line {
+    display: inline-block !important;
     white-space: nowrap !important;
+    overflow: hidden;
+    word-break: keep-all !important;
+    max-width: 100%;
   }
-  
+
   .technology-stats-overlay .stat-number {
     font-size: clamp(36px, 5vw, 56px);
   }
-  
+
   .technology-stats-overlay .stat-label {
     font-size: clamp(11px, 1.3vw, 14px);
   }
@@ -2231,16 +2241,21 @@ section#innovation .section-title .zero-text {
 
   .technology .section-title {
     font-size: clamp(20px, 3.5vw, 30px);
+    flex-wrap: nowrap !important;
   }
 
   .technology .section-title .title-line {
+    display: inline-block !important;
     white-space: nowrap !important;
+    overflow: hidden;
+    word-break: keep-all !important;
+    max-width: 100%;
   }
-  
+
   .technology-stats-overlay .stat-number {
     font-size: clamp(32px, 4.5vw, 48px);
   }
-  
+
   .technology-stats-overlay .stat-label {
     font-size: clamp(10px, 1.2vw, 13px);
   }
@@ -2896,16 +2911,21 @@ section#innovation .section-title .zero-text {
   .technology .section-title {
     font-size: clamp(18px, 5vw, 28px);
     margin-bottom: 20px;
+    flex-wrap: nowrap !important;
   }
 
   .technology .section-title .title-line {
+    display: inline-block !important;
     white-space: nowrap !important;
+    overflow: hidden;
+    word-break: keep-all !important;
+    max-width: 100%;
   }
-  
+
   .technology-stats-overlay .stat-number {
     font-size: clamp(28px, 4vw, 42px);
   }
-  
+
   .technology-stats-overlay .stat-label {
     font-size: clamp(9px, 1.1vw, 12px);
   }
