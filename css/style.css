@@ -1644,7 +1644,7 @@ section#innovation .section-title .zero-text {
 }
 
 .footer-logo {
-  font-size: 24px;
+  font-size: 18px;
   font-weight: 900;
   margin-bottom: 12px;
 }
@@ -2086,7 +2086,11 @@ section#innovation .section-title .zero-text {
     padding: 0 15px;
   }
 
-  .technology-content,
+  .technology-content {
+    grid-template-columns: 1fr;
+    gap: 0;
+  }
+  
   .about-content,
   .contact-content {
     grid-template-columns: 1fr;
