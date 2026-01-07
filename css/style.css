@@ -2108,12 +2108,13 @@ section#innovation .section-title .zero-text {
   }
 
   .technology .section-title .title-line {
-    white-space: nowrap;
+    white-space: nowrap !important;
   }
   
   .technology-stats-overlay .stats-grid {
-    max-width: 800px;
-    gap: clamp(16px, 2vw, 32px);
+    max-width: 700px;
+    gap: clamp(12px, 1.5vw, 24px);
+    padding: 0 10px;
   }
 
   .technology-visual {
@@ -2216,9 +2217,15 @@ section#innovation .section-title .zero-text {
     opacity: 0.2;
   }
 
+  .technology .section-title .title-line {
+    white-space: nowrap !important;
+  }
+  
   .technology-stats-overlay .stats-grid {
+    max-width: 600px;
     grid-template-columns: repeat(3, 1fr);
-    gap: 32px;
+    gap: clamp(16px, 2vw, 24px);
+    padding: 0 10px;
   }
 
   .carousel-header {
@@ -2872,6 +2879,16 @@ section#innovation .section-title .zero-text {
   .technology .section-title {
     font-size: clamp(24px, 7vw, 32px);
     margin-bottom: 20px;
+  }
+  
+  .technology .section-title .title-line {
+    white-space: nowrap !important;
+  }
+  
+  .technology-stats-overlay .stats-grid {
+    max-width: 500px;
+    gap: clamp(12px, 1.5vw, 20px);
+    padding: 0 8px;
   }
 
   .technology-description {
