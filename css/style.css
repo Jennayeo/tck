@@ -95,7 +95,7 @@ body {
   display: flex;
   justify-content: space-between;
   align-items: center;
-  height: 80px;
+  height: 100px;
   width: 100%;
   max-width: 100%;
   box-sizing: border-box;
@@ -109,7 +109,7 @@ body {
 }
 
 .logo-img {
-  height: 80px;
+  height: 100px;
   width: auto;
   object-fit: contain;
   transition: var(--transition);
@@ -716,7 +716,7 @@ section {
   background: var(--bg-white);
   padding: 120px 0;
   scroll-snap-align: start;
-  scroll-margin-top: 80px;
+  scroll-margin-top: 100px;
 }
 
 /* 모바일: services 섹션 상단 패딩 제거 */
@@ -1345,7 +1345,7 @@ section#innovation .section-title .zero-text {
   padding: 100px 0;
   background: var(--bg-light);
   scroll-snap-align: start;
-  scroll-margin-top: 80px;
+  scroll-margin-top: 100px;
 }
 
 .thumbnail-carousel-header {
@@ -1716,7 +1716,7 @@ section#innovation .section-title .zero-text {
   overflow: hidden;
   padding: 0;
   scroll-snap-align: start;
-  scroll-margin-top: 80px;
+  scroll-margin-top: 100px;
 }
 
 .carousel-header {
@@ -2784,11 +2784,11 @@ section#innovation .section-title .zero-text {
 
   /* Navigation */
   .logo-img {
-    height: 64px;
+    height: 80px;
   }
 
   .nav-content {
-    height: 60px;
+    height: 80px;
   }
 
   /* About 섹션 */
