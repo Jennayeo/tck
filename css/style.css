@@ -109,7 +109,7 @@ body {
 }
 
 .logo-img {
-  height: 40px;
+  height: 60px;
   width: auto;
   object-fit: contain;
   transition: var(--transition);
@@ -2784,7 +2784,7 @@ section#innovation .section-title .zero-text {
 
   /* Navigation */
   .logo-img {
-    height: 32px;
+    height: 48px;
   }
 
   .nav-content {
