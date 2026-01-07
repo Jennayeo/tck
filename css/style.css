@@ -2102,6 +2102,14 @@ section#innovation .section-title .zero-text {
     padding-right: 0;
     text-align: center;
   }
+  
+  .technology .section-title {
+    font-size: clamp(26px, 4vw, 40px);
+  }
+  
+  .technology .section-title .title-line {
+    white-space: nowrap;
+  }
 
   .technology-visual {
     height: 400px;
