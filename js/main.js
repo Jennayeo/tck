@@ -359,7 +359,6 @@ if (heroVideo) {
         if (heroVideo.readyState >= 2) {
           // HAVE_CURRENT_DATA or higher
           await heroVideo.play();
-          console.log("Video autoplay successful");
           playAttempted = true;
           playPromise = null;
           return true;
@@ -367,10 +366,6 @@ if (heroVideo) {
           throw new Error("Video not ready");
         }
       } catch (error) {
-        console.warn(
-          `Autoplay attempt ${retryCount + 1} failed:`,
-          error.message
-        );
         playPromise = null;
 
         // Retry with exponential backoff
@@ -379,10 +374,6 @@ if (heroVideo) {
           setTimeout(() => {
             playVideo(retryCount + 1);
           }, delay);
-        } else {
-          console.warn(
-            "Autoplay failed after all retries. User interaction required."
-          );
         }
         return false;
       }
@@ -402,7 +393,6 @@ if (heroVideo) {
         !heroVideo.ended &&
         heroVideo.readyState >= 2
       ) {
-        console.log("Video paused unexpectedly, attempting to resume...");
         playVideo(0).catch(() => {});
       }
     }, 3000); // Check every 3 seconds
@@ -410,7 +400,6 @@ if (heroVideo) {
 
   // Start monitoring after first successful play
   heroVideo.addEventListener("playing", () => {
-    console.log("Video is now playing!");
     startPlaybackMonitor();
   });
 
@@ -485,24 +474,9 @@ if (heroVideo) {
   let videoLoaded = false;
 
   const checkVideoLoaded = () => {
-    // Log video state for debugging
-    console.log("Video state check:", {
-      readyState: heroVideo.readyState,
-      networkState: heroVideo.networkState,
-      src: heroVideo.currentSrc || heroVideo.src,
-      error: heroVideo.error,
-      paused: heroVideo.paused,
-      loaded: videoLoaded,
-    });
-
     // Check if video actually loaded and can play
     if (heroVideo.readyState === 0 && heroVideo.networkState === 3) {
       // Network error or source not found
-      console.error(
-        "Video failed to load - network error. NetworkState:",
-        heroVideo.networkState
-      );
-      console.error("Video URL:", heroVideo.currentSrc || heroVideo.src);
       if (!videoLoaded) {
         showFallback();
       }
@@ -513,24 +487,6 @@ if (heroVideo) {
     clearTimeout(videoLoadTimeout);
     videoLoadTimeout = setTimeout(() => {
       if (heroVideo.readyState < 2 && !videoLoaded) {
-        console.error("Video taking too long to load!", {
-          readyState: heroVideo.readyState,
-          networkState: heroVideo.networkState,
-          src: heroVideo.currentSrc || heroVideo.src,
-          error: heroVideo.error,
-        });
-        console.warn("Showing fallback background due to slow video load");
-        showFallback();
-        console.error("Possible causes:");
-        console.error(
-          "1. CORS issue - video server may not allow cross-origin requests"
-        );
-        console.error(
-          "2. Referer/Origin restriction - video URL may be restricted to specific domains"
-        );
-        console.error("3. Network connectivity issue");
-        console.error("4. Video URL expired or invalid");
-
         showFallback();
         // Keep trying to load and play
         heroVideo.load();
@@ -560,34 +516,13 @@ if (heroVideo) {
 
   // Error handling - network errors, CORS, format errors
   heroVideo.addEventListener("error", (e) => {
-    console.error("=== VIDEO ERROR ===");
-    console.error("Event:", e);
     const error = heroVideo.error;
     if (error) {
-      console.error("Error code:", error.code);
-      console.error("Error message:", error.message);
-      console.error("Video URL:", heroVideo.currentSrc || heroVideo.src);
-      console.error("Network state:", heroVideo.networkState);
-      console.error("Ready state:", heroVideo.readyState);
-
       // Error code meanings:
       // 1 = MEDIA_ERR_ABORTED
       // 2 = MEDIA_ERR_NETWORK (CORS, network, 403, 404, etc.)
       // 3 = MEDIA_ERR_DECODE
       // 4 = MEDIA_ERR_SRC_NOT_SUPPORTED
-
-      if (error.code === 2) {
-        console.error("NETWORK ERROR - Possible causes:");
-        console.error(
-          "- CORS: Video server doesn't allow cross-origin requests"
-        );
-        console.error(
-          "- Referer restriction: Video URL may only work from specific domains"
-        );
-        console.error("- Authentication: Video URL may require authentication");
-        console.error("- 403/404: Video URL may be invalid or expired");
-        console.error("- Network: Firewall or connectivity issue");
-      }
 
       // Error code 2 = NETWORK_ERROR, 3 = DECODE_ERROR, 4 = SRC_NOT_SUPPORTED
       if (error.code >= 2) {
@@ -595,7 +530,6 @@ if (heroVideo) {
         showFallback();
         // Retry loading video after delay
         setTimeout(() => {
-          console.log("Retrying video load after error...");
           heroVideo.load();
           setTimeout(() => playVideo(0), 500);
         }, 3000);
@@ -605,19 +539,16 @@ if (heroVideo) {
 
   // Check for stalled loading
   heroVideo.addEventListener("stalled", () => {
-    console.warn("Video loading stalled");
     checkVideoLoaded();
   });
 
   // Check for abort
   heroVideo.addEventListener("abort", () => {
-    console.warn("Video loading aborted");
     showFallback();
   });
 
   // Monitor loading progress
   heroVideo.addEventListener("loadstart", () => {
-    console.log("Video loading started");
     checkVideoLoaded();
   });
 
@@ -625,7 +556,6 @@ if (heroVideo) {
     clearTimeout(videoLoadTimeout);
     if (heroVideo.readyState >= 2) {
       videoLoaded = true;
-      console.log("Video loaded successfully");
     }
   });
 
@@ -633,7 +563,6 @@ if (heroVideo) {
   heroVideo.addEventListener("loadedmetadata", () => {
     clearTimeout(videoLoadTimeout);
     videoLoaded = true;
-    console.log("Video metadata loaded");
     attemptPlayAfterLoad();
   });
 
@@ -641,7 +570,6 @@ if (heroVideo) {
   heroVideo.addEventListener("canplaythrough", () => {
     clearTimeout(videoLoadTimeout);
     videoLoaded = true;
-    console.log("Video can play through");
     attemptPlayAfterLoad();
   });
 
@@ -655,7 +583,6 @@ if (heroVideo) {
 
   // Play when video starts
   heroVideo.addEventListener("playing", () => {
-    console.log("Video is now playing!");
     videoLoaded = true;
     clearTimeout(videoLoadTimeout);
   });

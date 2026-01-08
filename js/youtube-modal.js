@@ -14,7 +14,6 @@ class YouTubeModal {
     this.currentVideoId = null;
 
     if (!this.modal) {
-      console.error('YouTube modal elements not found');
       return;
     }
 

@@ -24,7 +24,6 @@ async function fetchVideoInfoWithAPI(videoId, apiKey) {
       description: video.snippet.description
     };
   } catch (error) {
-    console.error(`영상 정보 가져오기 실패 (${videoId}):`, error);
     return null;
   }
 }
@@ -45,7 +44,6 @@ async function fetchVideoTitleWithoEmbed(videoId) {
       description: null // oEmbed는 설명을 제공하지 않음
     };
   } catch (error) {
-    console.error(`영상 제목 가져오기 실패 (${videoId}):`, error);
     return null;
   }
 }
@@ -55,7 +53,6 @@ async function updateThumbnailVideoInfo() {
   const thumbnailItems = document.querySelectorAll('.thumbnail-item.youtube-item[data-youtube-id]');
   
   if (thumbnailItems.length === 0) {
-    console.log('YouTube 썸네일을 찾을 수 없습니다.');
     return;
   }
   
@@ -82,7 +79,6 @@ async function updateThumbnailVideoInfo() {
       videoInfo = await fetchVideoInfoWithAPI(videoId, apiKey);
     } else {
       videoInfo = await fetchVideoTitleWithoEmbed(videoId);
-      console.log('API 키가 없어 oEmbed를 사용합니다. 제목만 가져올 수 있습니다.');
     }
     
     if (videoInfo && videoInfo.title) {

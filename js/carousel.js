@@ -14,13 +14,6 @@ class ValuesCarousel {
     this.animationTimeout = null;
     this.isPaused = false; // 초기값: 재생 중
 
-    console.log(`Carousel initialized with ${this.totalSlides} slides`);
-    console.log(
-      "Slides found:",
-      Array.from(this.slides).map(
-        (s, i) => `${i}: ${s.querySelector("h3")?.textContent || "No title"}`
-      )
-    );
 
     // 카운터 업데이트
     const totalEl = document.getElementById("carouselTotal");
@@ -33,7 +26,6 @@ class ValuesCarousel {
 
   init() {
     if (!this.container || this.slides.length === 0) {
-      console.error("Carousel elements not found");
       return;
     }
 
@@ -48,18 +40,12 @@ class ValuesCarousel {
         e.preventDefault();
         e.stopPropagation();
         e.stopImmediatePropagation();
-        console.log(
-          "Previous button clicked, currentIndex:",
-          this.currentIndex
-        );
         this.goToPrevious();
       });
       // 버튼이 클릭 가능하도록 확실히 설정
       this.prevBtn.style.pointerEvents = "auto";
       this.prevBtn.style.zIndex = "1000";
       this.prevBtn.style.position = "absolute";
-    } else {
-      console.error("Previous button not found");
     }
 
     // 다음 버튼 이벤트 리스너
@@ -73,15 +59,12 @@ class ValuesCarousel {
         e.preventDefault();
         e.stopPropagation();
         e.stopImmediatePropagation();
-        console.log("Next button clicked, currentIndex:", this.currentIndex);
         this.goToNext();
       });
       // 버튼이 클릭 가능하도록 확실히 설정
       this.nextBtn.style.pointerEvents = "auto";
       this.nextBtn.style.zIndex = "1000";
       this.nextBtn.style.position = "absolute";
-    } else {
-      console.error("Next button not found");
     }
 
     // 정지/재생 버튼 이벤트 리스너
@@ -151,7 +134,6 @@ class ValuesCarousel {
 
     // 같은 슬라이드면 무시
     if (normalizedIndex === this.currentIndex) {
-      console.log(`Same slide (${normalizedIndex}), skipping`);
       return;
     }
 
@@ -160,9 +142,6 @@ class ValuesCarousel {
       clearTimeout(this.animationTimeout);
     }
 
-    console.log(
-      `Moving from slide ${this.currentIndex} to ${normalizedIndex} (Total: ${this.totalSlides})`
-    );
 
     this.currentIndex = normalizedIndex;
     this.updateSlides();
@@ -173,13 +152,11 @@ class ValuesCarousel {
     this.isAnimating = true;
     this.animationTimeout = setTimeout(() => {
       this.isAnimating = false;
-      console.log(`Animation complete. Current slide: ${this.currentIndex}`);
     }, 600);
   }
 
   goToNext() {
     const nextIndex = this.currentIndex + 1;
-    console.log(`goToNext: ${this.currentIndex} -> ${nextIndex}`);
     this.goToSlide(nextIndex);
   }
 
@@ -196,9 +173,6 @@ class ValuesCarousel {
 
     // 현재 슬라이드가 유효한지 확인
     if (!this.slides[this.currentIndex]) {
-      console.error(
-        `Invalid currentIndex: ${this.currentIndex}. Total slides: ${this.totalSlides}`
-      );
       this.currentIndex = 0;
     }
 
@@ -235,20 +209,6 @@ class ValuesCarousel {
     // 강제 리플로우 유도 (브라우저가 변경사항을 인식하도록)
     currentSlide.offsetHeight;
 
-    // 디버깅: 실제 클래스 상태 확인
-    const activeClasses = Array.from(this.slides).map(
-      (slide, i) =>
-        `${i}: ${slide.classList.contains("active") ? "active" : ""} ${
-          slide.classList.contains("prev") ? "prev" : ""
-        } ${slide.classList.contains("next") ? "next" : ""}`
-    );
-
-    console.log(
-      `✅ Slide updated: Current=${this.currentIndex} (${
-        this.currentIndex + 1
-      }/${this.totalSlides}), Prev=${prevIndex}, Next=${nextIndex}`
-    );
-    console.log("Classes:", activeClasses);
   }
 
   updateCounter() {
@@ -265,13 +225,9 @@ class ValuesCarousel {
     this.stopAutoPlay();
     // 자동 재생 시작
     this.autoPlayInterval = setInterval(() => {
-      console.log(
-        `Auto-play: currentIndex=${this.currentIndex}, isAnimating=${this.isAnimating}`
-      );
       // 애니메이션 체크 제거 - 항상 넘김
       this.goToNext();
     }, this.autoPlayDelay);
-    console.log("Auto-play started");
   }
 
   togglePause() {
@@ -283,12 +239,10 @@ class ValuesCarousel {
       this.stopAutoPlay();
       if (pauseIcon) pauseIcon.style.display = "none";
       if (playIcon) playIcon.style.display = "block";
-      console.log("Carousel paused");
     } else {
       this.startAutoPlay();
       if (pauseIcon) pauseIcon.style.display = "block";
       if (playIcon) playIcon.style.display = "none";
-      console.log("Carousel resumed");
     }
   }
 

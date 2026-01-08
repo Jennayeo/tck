@@ -10,7 +10,6 @@ class ThumbnailCarousel {
     this.isTransitioning = false;
 
     if (!this.container || this.slides.length === 0) {
-      console.error("Thumbnail Carousel elements not found");
       return;
     }
 
@@ -39,22 +38,16 @@ class ThumbnailCarousel {
       this.prevBtn.addEventListener("click", (e) => {
         e.preventDefault();
         e.stopPropagation();
-        console.log("Previous button clicked");
         this.goToPrevious();
       });
-    } else {
-      console.error("Previous button not found");
     }
 
     if (this.nextBtn) {
       this.nextBtn.addEventListener("click", (e) => {
         e.preventDefault();
         e.stopPropagation();
-        console.log("Next button clicked");
         this.goToNext();
       });
-    } else {
-      console.error("Next button not found");
     }
 
     // 키보드 네비게이션
@@ -90,26 +83,22 @@ class ThumbnailCarousel {
 
   goToSlide(index) {
     if (this.isTransitioning) {
-      console.log("Transition in progress, ignoring");
       return;
     }
 
     if (index < 0) index = this.totalSlides - 1;
     if (index >= this.totalSlides) index = 0;
 
-    console.log(`Going to slide ${index}`);
     this.currentIndex = index;
     this.updateSlides();
     this.updateCounter();
   }
 
   goToNext() {
-    console.log(`Current index: ${this.currentIndex}, Going to next`);
     this.goToSlide(this.currentIndex + 1);
   }
 
   goToPrevious() {
-    console.log(`Current index: ${this.currentIndex}, Going to previous`);
     this.goToSlide(this.currentIndex - 1);
   }
 

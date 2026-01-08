@@ -5,7 +5,6 @@ class CorvetteRotate {
     this.container = document.querySelector('.about-image');
     
     if (!this.image || !this.container) {
-      console.error('Corvette image elements not found');
       return;
     }
 
