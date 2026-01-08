@@ -38,6 +38,7 @@ body {
   color: var(--text-primary);
   line-height: 1.6;
   overflow-x: hidden;
+  overflow-y: auto;
 }
 
 .container {
@@ -62,7 +63,7 @@ body {
   z-index: 1000;
   transition: var(--transition);
   border-bottom: 1px solid transparent;
-  overflow-x: hidden;
+  overflow: hidden;
 }
 
 /* Initial state: assume over hero section until scroll event fires */
