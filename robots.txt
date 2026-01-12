@@ -1,14 +1,10 @@
-# Temporarily hide website from search engines
 User-agent: *
-Disallow: /
+Allow: /
 
-# Sitemap (temporarily disabled)
-# Sitemap: https://www.gmtck.com/sitemap.xml
+# Sitemap
+Sitemap: https://www.gmtck.com/sitemap.xml
 
-# Note: To re-enable search engine indexing, change "Disallow: /" to "Allow: /"
-# and uncomment the Sitemap line above
-
-# Admin pages (kept disallowed)
-# Disallow: /admin-login.html
-# Disallow: /admin-dashboard.html
-# Disallow: /admin-analytics.html
+# Disallow admin pages from search engines
+Disallow: /admin-login.html
+Disallow: /admin-dashboard.html
+Disallow: /admin-analytics.html
