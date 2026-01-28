@@ -1669,6 +1669,18 @@ section#innovation .section-title .zero-text {
   color: rgba(255, 255, 255, 0.6);
 }
 
+.footer-brand .footer-privacy-link {
+  font-size: 14px;
+  font-weight: 700;
+}
+
+.footer-right {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-end;
+  gap: 16px;
+}
+
 .footer-social {
   display: flex;
   align-items: center;
@@ -1712,11 +1724,49 @@ section#innovation .section-title .zero-text {
   text-align: center;
   padding-top: 32px;
   border-top: 1px solid rgba(255, 255, 255, 0.1);
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 16px;
 }
 
 .footer-bottom p {
   color: rgba(255, 255, 255, 0.4);
   font-size: 14px;
+  margin: 0;
+}
+
+.footer-privacy-link,
+.footer-privacy-link:link,
+.footer-privacy-link:visited,
+.footer-privacy-link:active {
+  color: rgba(255, 255, 255, 0.6) !important;
+  font-size: 14px;
+  text-decoration: none !important;
+  transition: color 0.3s ease;
+  display: inline-block;
+  border: none !important;
+  outline: none !important;
+  background: none !important;
+  padding: 0 !important;
+  margin: 0 !important;
+  box-shadow: none !important;
+}
+
+.footer-privacy-link:hover {
+  color: rgba(255, 255, 255, 0.9) !important;
+  text-decoration: underline !important;
+  border: none !important;
+  outline: none !important;
+  background: none !important;
+  box-shadow: none !important;
+}
+
+.footer-privacy-link:focus {
+  color: rgba(255, 255, 255, 0.6) !important;
+  border: none !important;
+  outline: none !important;
+  box-shadow: none !important;
 }
 
 /* ===========================
@@ -2513,6 +2563,10 @@ section#innovation .section-title .zero-text {
     gap: 32px;
   }
 
+  .footer-right {
+    align-items: center;
+  }
+
   .footer-social {
     justify-content: center;
   }
@@ -2950,6 +3004,10 @@ section#innovation .section-title .zero-text {
     align-items: center;
     text-align: center;
     gap: 24px;
+  }
+
+  .footer-right {
+    align-items: center;
   }
 
   .footer-social {
