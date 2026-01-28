@@ -1770,6 +1770,175 @@ section#innovation .section-title .zero-text {
 }
 
 /* ===========================
+   Subpages (Team TCK Hub / HQ / Interviews)
+   =========================== */
+.subpage-hero {
+  min-height: 55vh;
+  display: flex;
+  align-items: center;
+  padding: 140px 0 80px;
+  background: linear-gradient(135deg, var(--bg-darker) 0%, var(--bg-dark) 100%);
+  color: var(--bg-white);
+}
+
+.subpage-hero-content {
+  max-width: 820px;
+}
+
+.subpage-breadcrumb {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  font-size: 14px;
+  color: rgba(255, 255, 255, 0.7);
+  margin-bottom: 18px;
+}
+
+.subpage-breadcrumb-link {
+  color: rgba(255, 255, 255, 0.85);
+  text-decoration: none;
+}
+
+.subpage-breadcrumb-link:hover {
+  text-decoration: underline;
+}
+
+.subpage-breadcrumb-sep {
+  opacity: 0.6;
+}
+
+.subpage-title {
+  font-size: clamp(40px, 5.5vw, 64px);
+  font-weight: 900;
+  letter-spacing: -1.5px;
+  line-height: 1.15;
+}
+
+.subpage-subtitle {
+  margin-top: 18px;
+  font-size: 18px;
+  line-height: 1.8;
+  color: rgba(255, 255, 255, 0.78);
+}
+
+.subpage-section {
+  background: var(--bg-white);
+  padding: 120px 0;
+}
+
+.subpage-content {
+  max-width: 1100px;
+  margin: 0 auto;
+}
+
+.subpage-paragraph {
+  margin-top: 16px;
+  font-size: 18px;
+  line-height: 1.8;
+  color: var(--text-secondary);
+}
+
+.subpage-grid {
+  margin-top: 48px;
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 24px;
+}
+
+.subpage-card {
+  display: block;
+  border: 1px solid var(--border-color);
+  border-radius: 16px;
+  padding: 28px;
+  text-decoration: none;
+  background: #ffffff;
+  transition: transform 0.25s ease, box-shadow 0.25s ease,
+    border-color 0.25s ease;
+}
+
+.subpage-card:hover {
+  transform: translateY(-4px);
+  border-color: rgba(0, 45, 92, 0.25);
+  box-shadow: 0 18px 40px rgba(0, 0, 0, 0.08);
+}
+
+.subpage-card-label {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  font-size: 13px;
+  font-weight: 700;
+  letter-spacing: 0.5px;
+  color: var(--primary-color);
+  background: rgba(0, 45, 92, 0.06);
+  padding: 6px 10px;
+  border-radius: 999px;
+}
+
+.subpage-card-title {
+  margin-top: 16px;
+  font-size: 22px;
+  font-weight: 800;
+  color: var(--text-primary);
+  letter-spacing: -0.5px;
+}
+
+.subpage-card-desc {
+  margin-top: 12px;
+  font-size: 16px;
+  line-height: 1.8;
+  color: var(--text-secondary);
+}
+
+.subpage-card-cta {
+  display: inline-flex;
+  margin-top: 18px;
+  font-size: 14px;
+  font-weight: 700;
+  color: var(--primary-color);
+}
+
+.subpage-list {
+  margin-top: 28px;
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  gap: 18px;
+}
+
+.subpage-list-item {
+  border: 1px solid var(--border-color);
+  border-radius: 14px;
+  padding: 18px 18px 16px;
+  background: #ffffff;
+}
+
+.subpage-list-item h3 {
+  font-size: 16px;
+  font-weight: 800;
+  letter-spacing: -0.3px;
+  margin-bottom: 8px;
+  color: var(--text-primary);
+}
+
+.subpage-list-item p {
+  font-size: 14px;
+  line-height: 1.7;
+  color: var(--text-secondary);
+}
+
+@media (max-width: 900px) {
+  .subpage-grid {
+    grid-template-columns: 1fr;
+  }
+  .subpage-list {
+    grid-template-columns: 1fr;
+  }
+  .subpage-hero {
+    padding: 130px 0 70px;
+  }
+}
+
+/* ===========================
    Values Carousel Section
    =========================== */
 .values-carousel {
